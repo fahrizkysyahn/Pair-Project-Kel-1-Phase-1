@@ -1,0 +1,26 @@
+[
+  {
+    "username": "andi_pratama",
+    "email": "andi.pratama@email.com",
+    "password": "Andi@12345",
+    "role": "user"
+  },
+  {
+    "username": "budi_santoso",
+    "email": "budi.santoso@email.com",
+    "password": "Budi@12345",
+    "role": "user"
+  },
+  {
+    "username": "citra_dewi",
+    "email": "citra.dewi@email.com",
+    "password": "Citra@12345",
+    "role": "user"
+  },
+  {
+    "username": "deni_rahman",
+    "email": "deni.rahman@email.com",
+    "password": "Deni@12345",
+    "role": "user"
+  }
+]
