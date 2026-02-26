@@ -9,12 +9,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Categories.hasMany(models.Courses);
+      Categories.hasMany(models.Course);
     }
   }
   Categories.init(
     {
-      name: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Category name is required" },
+          notEmpty: { msg: "Category name cannot be empty" },
+          len: {
+            args: [3, 50],
+            msg: "Category name must be 3-50 characters",
+          },
+        },
+      },
     },
     {
       sequelize,

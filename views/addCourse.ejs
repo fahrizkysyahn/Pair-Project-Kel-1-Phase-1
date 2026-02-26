@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Course</title>
+</head>
+<style>
+  .fixed-size {
+    resize: none;
+  }
+</style>
+<body>
+    <%- include('./components/_navbar') %>
+    <% if (errors) { %>
+       <% errors.forEach(el => { %>
+        <p style="color: red;"><%= el %></p>
+       <% }) %>
+      <% } %>
+      
+    <form action="/admin/courselist/add" method="post">
+        <label for="category">Category Name</label>
+        <select name="CategoryId" id="">
+            <% data.forEach(category => { %>
+                <option value="<%= category.id %>"><%= category.name %></option>
+            <% }) %>
+        </select>
+        <br>
+        <label for="name">Course Name</label>
+        <input type="text" name="name" id="">
+        <br>
+        <label for="description">Description</label>
+        <textarea name="description" id="" rows="5" cols="50" class="fixed-size"></textarea>
+        <br>
+        <label for="duration">Duration</label>
+        <input type="number" name="duration" id="">
+        <br>
+        <button type="submit">Add Course</button>
+    </form>
+</body>
+</html>
