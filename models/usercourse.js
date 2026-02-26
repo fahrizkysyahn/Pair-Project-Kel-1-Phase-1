@@ -13,15 +13,29 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "UserId",
       });
 
-      User.belongsTo(models.Course, {
+      UserCourse.belongsTo(models.Course, {
         foreignKey: "CourseId",
       });
     }
   }
   UserCourse.init(
     {
-      UserId: DataTypes.INTEGER,
-      CourseId: DataTypes.INTEGER,
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "User ID required" },
+          isInt: { msg: "Invalid User ID" },
+        },
+      },
+      CourseId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Course ID required" },
+          isInt: { msg: "Invalid Course ID" },
+        },
+      },
     },
     {
       sequelize,

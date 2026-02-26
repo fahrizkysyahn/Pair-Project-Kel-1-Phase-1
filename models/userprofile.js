@@ -9,13 +9,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      UserProfile.belongsTo(models.UserProfile);
+      UserProfile.belongsTo(models.User);
     }
   }
   UserProfile.init(
     {
-      fullName: DataTypes.STRING,
-      phoneNumber: DataTypes.STRING,
+      fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        // unique: { msg: "Username already taken" },
+        validate: {
+          notNull: { msg: "Full name is required" },
+          notEmpty: { msg: "Full name cannot be empty" },
+          len: {
+            args: [2, 100],
+            msg: "Full name must be between 2-100 characters",
+          },
+        },
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        // unique: { msg: "Username already taken" },
+        validate: {
+          notNull: { msg: "Phone number is required" },
+          notEmpty: { msg: "Phone number cannot be empty" },
+          len: {
+            args: [2, 20],
+            msg: "Phone number must be between 2-20 characters",
+          },
+        },
+      },
       gender: DataTypes.STRING,
       UserId: DataTypes.INTEGER,
     },

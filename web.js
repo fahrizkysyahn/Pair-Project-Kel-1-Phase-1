@@ -23,3 +23,12 @@ Router
 ('/:id/Courses') >> buat lihat courses yang dipunya (user) (frenklin)
 
 ('/Categories/Courses') >> buat ngelihat course apa aja + nambah course ke ('/UserId/Courses') (berdua)
+
+helpers udah
+migration tambahan udah
+seeding data dummy udah
+getter udah
+2 validasi udah
+hooks udah
+sistem login udah
+*/

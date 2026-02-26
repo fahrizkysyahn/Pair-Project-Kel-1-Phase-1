@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses</title>
+</head>
+<body>
+    <%- include('./components/_navbar') %>
+
+    <% if (role === 'admin') { %>
+     <a href="/admin/courselist/add">Add new Course</a>
+    <% } %>
+    <% data.forEach(category => { %>
+        <br>
+      <b style="font-size: large;"><%= category.name %></b>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Duration</th>
+                <th>Action</th>
+            </tr>
+            <% category.Courses.forEach(course => { %>
+                <tr>
+                    <td><%= course.name %></td>
+                    <td><%= course.description %></td>
+                    <td><%= course.formatDuration %></td>
+                    <td><% if (role === 'admin') { %>
+                    <a href="/admin/delete/<%= course.id %>">Delete</a>
+                    <% } else { %> <a href="">Add to My Course</a>
+                     </td>
+                </tr>
+            <% }}) %>
+        </table>
+    <% }) %>
+</body>
+</html>
