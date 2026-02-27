@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: white;
+      color: #000080;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 0 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 32px;
+    }
+    .field {
+      margin-bottom: 16px;
+    }
+    .label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .value {
+      color: #333;
+    }
+    a.btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 24px;
+      background: #000080;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <%- include('./components/_navbar') %>
+  <div class="container">
+    <h2>My Profile</h2>
+
+    <div class="field">
+      <div class="label">Username</div>
+      <div class="value"><%= user.username %></div>
+    </div>
+
+    <div class="field">
+      <div class="label">Email</div>
+      <div class="value"><%= user.email %></div>
+    </div>
+
+    <div class="field">
+      <div class="label">Role</div>
+      <div class="value"><%= user.role %></div>
+    </div>
+
+    <hr />
+
+    <% if (user.UserProfile) { %>
+      <div class="field">
+        <div class="label">Full Name</div>
+        <div class="value"><%= user.UserProfile.fullName %></div>
+      </div>
+
+      <div class="field">
+        <div class="label">Phone Number</div>
+        <div class="value"><%= user.UserProfile.phoneNumber %></div>
+      </div>
+
+      <div class="field">
+        <div class="label">Gender</div>
+        <div class="value"><%= user.UserProfile.gender || '-' %></div>
+      </div>
+    <% } else { %>
+      <p>Profile belum diisi.</p>
+    <% } %>
+
+    <a href="/profile/edit" class="btn">Edit Profile</a>
+  </div>
+</body>
+</html>
