@@ -1,17 +1,10 @@
-const {
-  User,
-  Course,
-  Categories,
-  UserCourse,
-  UserProfile,
-} = require("../models/index");
-
+const { User, Course, Categories, UserCourse, UserProfile } = require("../models/index");
+const { Op } = require("sequelize");
 const { comparePassword } = require("../helpers/brycpt");
 
 class Controller {
   static async login(req, res) {
     try {
-      //   console.log(req.query);
       const { errors } = req.query;
       res.render("landing", { errors });
     } catch (error) {
@@ -21,18 +14,13 @@ class Controller {
 
   static async postLogin(req, res) {
     try {
-      const { username, email, password } = req.body;
-      //   res.send(req.body);
-
-      const user = await User.findOne({
-        where: {
-          username,
-        },
-      });
+      const { username, password } = req.body;
+      const user = await User.findOne({ where: { username } });
 
       if (!user || !comparePassword(password, user.password)) {
         return res.redirect("/?errors=Invalid username or password");
       }
+
       req.session.userId = user.id;
       req.session.username = user.username;
       req.session.role = user.role;
@@ -53,22 +41,12 @@ class Controller {
 
   static async postRegister(req, res) {
     try {
-      //   res.send(req.body);
       const { username, email, password } = req.body;
-
-      await User.create({
-        username,
-        email,
-        password,
-      });
-
+      await User.create({ username, email, password });
       res.redirect("/?msg=register success, please login");
     } catch (error) {
       if (error.name === "SequelizeValidationError") {
-        let errors = error.errors.map((el) => {
-          return el.message;
-        });
-
+        let errors = error.errors.map((el) => el.message);
         res.render("register", { errors });
       } else {
         res.send(error);
@@ -76,20 +54,31 @@ class Controller {
     }
   }
 
+  // ✅ showTable dengan fitur search menggunakan Sequelize Op
   static async showTable(req, res) {
     try {
-      const { role, userId } = req.session;
+      const { role } = req.session;
+      const { search } = req.query;
+
+      // Kondisi where untuk search
+      const whereCondition = search
+        ? {
+            [Op.or]: [
+              { name: { [Op.iLike]: `%${search}%` } },
+              { description: { [Op.iLike]: `%${search}%` } },
+            ],
+          }
+        : {};
+
       let data = await Categories.findAll({
         include: {
           model: Course,
-          where: {},
+          where: whereCondition,
           required: false,
         },
       });
-      //   res.send(data);
-      //   console.log(role);
 
-      res.render("showCourses", { data, role });
+      res.render("showCourses", { data, role, search: search || "" });
     } catch (error) {
       res.send(error);
     }

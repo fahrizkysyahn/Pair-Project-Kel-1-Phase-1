@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Courses</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Courses</title>
 </head>
 <body>
-    <%- include('./components/_navbar') %>
+  <%- include('./components/_navbar') %>
 
-    <% if (role === 'admin') { %>
-     <a href="/admin/courselist/add">Add new Course</a>
+  <!-- ✅ Search Form -->
+  <form action="/courselist" method="get" style="margin: 1rem;">
+    <input
+      type="text"
+      name="search"
+      placeholder="Search courses..."
+      value="<%= search %>"
+      style="padding: 8px; width: 250px; border-radius: 4px; border: 1px solid #ccc;"
+    />
+    <button type="submit" style="padding: 8px 16px; background: navy; color: white; border: none; border-radius: 4px; cursor: pointer;">
+      Search
+    </button>
+    <% if (search) { %>
+      <a href="/courselist" style="margin-left: 8px; color: navy;">Clear</a>
     <% } %>
-    <% data.forEach(category => { %>
-        <br>
-      <b style="font-size: large;"><%= category.name %></b>
-        <table border="1">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Duration</th>
-                <th>Action</th>
-            </tr>
-            <% category.Courses.forEach(course => { %>
-                <tr>
-                    <td><%= course.name %></td>
-                    <td><%= course.description %></td>
-                    <td><%= course.formatDuration %></td>
-                    <td><% if (role === 'admin') { %>
-                    <a href="/admin/delete/<%= course.id %>">Delete</a>
-                    <% } else { %> <a href="">Add to My Course</a>
-                     </td>
-                </tr>
-            <% }}) %>
-        </table>
-    <% }) %>
+  </form>
+
+  <% if (role === 'admin') { %>
+    <a href="/admin/courselist/add" style="margin: 0 1rem;">Add New Course</a>
+    <a href="/email" style="margin: 0 1rem;">Send Email</a>
+  <% } %>
+
+  <% data.forEach(category => { %>
+    <br>
+    <b style="font-size: large; margin: 0 1rem;"><%= category.name %></b>
+    <table border="1" style="margin: 0.5rem 1rem;">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Duration</th>
+        <th>Action</th>
+      </tr>
+      <% category.Courses.forEach(course => { %>
+        <tr>
+          <td><%= course.name %></td>
+          <td><%= course.description %></td>
+          <td><%= course.formatDuration %></td>
+          <td>
+            <% if (role === 'admin') { %>
+              <a href="/admin/delete/<%= course.id %>">Delete</a>
+            <% } else { %>
+              <a href="#">Add to My Course</a>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </table>
+  <% }) %>
+
+  <% if (search && data.every(c => c.Courses.length === 0)) { %>
+    <p style="margin: 1rem;">No courses found for "<%= search %>".</p>
+  <% } %>
 </body>
 </html>
