@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Profile</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: white;
+      color: #000080;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 32px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      padding: 10px 24px;
+      background: #000080;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    a {
+      margin-left: 12px;
+      color: #000080;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <%- include('components/_navbar') %>
+  <div class="container">
+    <h2>Edit Profile</h2>
+
+    <% if (errors) { %>
+      <% errors.forEach(e => { %>
+        <p style="color: red;"><%= e %></p>
+      <% }) %>
+    <% } %>
+
+    <form action="/profile/edit" method="post">
+      <label>Full Name</label>
+      <input type="text" name="fullName" placeholder="Full Name"
+        value="<%= user.UserProfile ? user.UserProfile.fullName : '' %>" />
+
+      <label>Phone Number</label>
+      <input type="text" name="phoneNumber" placeholder="Phone Number"
+        value="<%= user.UserProfile ? user.UserProfile.phoneNumber : '' %>" />
+
+      <label>Gender</label>
+      <select name="gender">
+        <option value="">-- Select Gender --</option>
+        <option value="Male" <%= user.UserProfile && user.UserProfile.gender === 'Male' ? 'selected' : '' %>>Male</option>
+        <option value="Female" <%= user.UserProfile && user.UserProfile.gender === 'Female' ? 'selected' : '' %>>Female</option>
+      </select>
+
+      <button type="submit">Save Changes</button>
+      <a href="/profile">Cancel</a>
+    </form>
+  </div>
+</body>
+</html>
